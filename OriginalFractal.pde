@@ -49,22 +49,22 @@ void FractalFlake(int x, int y, int xLength, int yLength) { //recursive fractal 
 }
 
 class snowFrac { //holder class to store the locations and sizes of snowFractalFlake fractals
-  private float x, y, xspeed, howBig, transparency;
+  private float x, y, xspeed, howBig, fade;
   snowFrac() {
     x=random(250, 800); //initializes the snowFractalFlake somewhere above the screen, with opaque transparency and a random x velocity
     howBig=random(10, 70);
     y=random(-100, 0);
-    transparency=255;
+    fade=255;
     xspeed=random(-2, 2);
   }
   boolean show() {
     x+=xspeed; //update x position based on speed
     y+=1; //make snowFractalFlake fall
-    transparency-=.6; //make snowFractalFlake fade
-    stroke(255, 255, 255, (int)transparency);
+    fade-=.6; //make snowFractalFlake fade
+    stroke(255, 255, 255, (int)fade);
     FractalFlake((int)x, (int)y, (int) howBig, 0); //draw the snowFractalFlake using the fractal
     FractalFlake((int)x, (int)y, 0, (int)howBig);
-    if (transparency<0) {
+    if (fade<0) {
       return false; //if it's completely faded, return false so that it will be removed from the arraylist
     }
     return true;
