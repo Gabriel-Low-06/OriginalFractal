@@ -1,9 +1,10 @@
+PImage wood;
+ArrayList<snowFrac>puffs;
 void setup() {
   size(1100, 700);
   wood = loadImage("firewood-lumberjack-log-splitters-wood-78689ed69d835690b2628f3106915222.png");
+  puffs  = new ArrayList<snowFrac>();
 }
-PImage wood;
-ArrayList<snowFrac>puffs = new ArrayList<snowFrac>();
 void fireFractal(float x, float y, float size) {
   if (size>random(50, 110)) {
     fireFractal(x+(size*random(0, .5)), y-(size*(random(.01, .1))), size*random(.7, .9));
