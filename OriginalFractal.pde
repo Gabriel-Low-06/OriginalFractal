@@ -1,11 +1,11 @@
+PImage wood; //decalre image of wood and snowFractalFlakes
+ArrayList<snowFrac>snow;
 void setup() {
   size(1100, 700);
   wood = loadImage("firewood-lumberjack-log-splitters-wood-78689ed69d835690b2628f3106915222.png");
   snow  = new ArrayList<snowFrac>();
   //load image of logs, initialize arraylist of snowFractalFlakes
 }
-PImage wood; //decalre image of wood and snowFractalFlakes
-ArrayList<snowFrac>snow;
 
 void fireFractal(float x, float y, float size) { //recursive code to generate fire
   if (size>random(50, 110)) {  //if this flame is bigger than a certain size, add two new, smaller flames to the left and right
@@ -39,7 +39,7 @@ void fractalTree(float x, float y, float xSize, float ySize) { //recursive fract
   }
 }
 
-void FractalFlake(int x, int y, int xLength, int yLength) { //recursive fractal to draw an easy snowFractalFlake
+void FractalFlake(float x, float y, float xLength, float yLength) { //recursive fractal to draw an easy snowFractalFlake
   line(x-(xLength/2), y-(yLength/2), x+(xLength/2), y+(yLength/2)); //draw the given line of the snowFractalFlake
   if (xLength>5 ||yLength>5) {
     FractalFlake(x+(xLength/3), y+(yLength/3), yLength/2, xLength/2); //call the function to make three lines through the middle of this line
@@ -62,7 +62,7 @@ class snowFrac { //holder class to store the locations and sizes of snowFractalF
     y+=1; //make snowFractalFlake fall
     fade-=.6; //make snowFractalFlake fade
     stroke(255, 255, 255, (int)fade);
-    FractalFlake((int)x, (int)y, (int) howBig, 0); //draw the snowFractalFlake using the fractal
+    FractalFlake((int)x, (int)y, (int) howBig, 0); //draw the snowflake using the fractal
     FractalFlake((int)x, (int)y, 0, (int)howBig);
     if (fade<0) {
       return false; //if it's completely faded, return false so that it will be removed from the arraylist
@@ -88,11 +88,11 @@ void draw() {
   fireFractal(300, 700, 200); //draw the fire fractal on top of the logs
   
   noFill(); //periodically add new snowflakes to the scene
-  if (Math.random()>.995) {
+  if (random(0,1)>.995) {
     snow.add(new snowFrac());
   }
   for (int i=0; i<snow.size(); i++) {
-    if (snow.get(i).show()==false) { //draw all the snowFractalFlakes
+    if (snow.get(i).show()==false) { //draw all the snowflakes
       snow.remove(i); //if they've faded, remove from memory
       i--;
     }
