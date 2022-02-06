@@ -1,15 +1,14 @@
-PImage wood;
-ArrayList<snowFrac>puffs;
 void setup() {
   size(1100, 700);
   wood = loadImage("firewood-lumberjack-log-splitters-wood-78689ed69d835690b2628f3106915222.png");
   puffs  = new ArrayList<snowFrac>();
 }
+PImage wood;
+ArrayList<snowFrac>puffs;
 void fireFractal(float x, float y, float size) {
   if (size>random(50, 110)) {
     fireFractal(x+(size*random(0, .5)), y-(size*(random(.01, .1))), size*random(.7, .9));
     fireFractal(x-(size*random(-.1, .3)), y-(size*random(.01, .1)), size*random(.7, .9));
-    //fireFractal(x+size*(random(.1,.2)),y-(size*.6),size*random(.3,.6));
   }
   fill(255, random(120, 140), random(20, 40), 135);
   pushMatrix();
@@ -71,7 +70,7 @@ class snowFrac {
 void draw() {
   background(0, 0, 0);
   fill(255, 255, 255);
-  tint(150,100,100);
+  tint(150, 100, 100);
   image(wood, 180, 630, 200, 120);
   image(wood, 360, 630, 200, 120);
   ellipse(100, 100, 100, 100);
