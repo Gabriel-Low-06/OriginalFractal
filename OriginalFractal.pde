@@ -1,6 +1,8 @@
 void setup() {
   size(1100, 700);
+  wood = loadImage("firewood-lumberjack-log-splitters-wood-78689ed69d835690b2628f3106915222.png");
 }
+PImage wood;
 ArrayList<snowFrac>puffs = new ArrayList<snowFrac>();
 void fireFractal(float x, float y, float size) {
   if (size>random(50, 110)) {
@@ -19,18 +21,18 @@ void fireFractal(float x, float y, float size) {
   triangle(x+(size/8), y, x+(size*.75*.5), y, x+(size*.35*.5), y-size*1);
   popMatrix();
 }
-void tree(float x, float y, float xSize, float ySize) {
+void fractalTree(float x, float y, float xSize, float ySize) {
   strokeWeight((abs(xSize)+ySize)/24);
-  stroke(100+(ySize*.7), constrain(255-(ySize*3),90,255), 63);
+  stroke(100+(ySize*.7), constrain(255-(ySize*3), 90, 255), 63);
   line(x-xSize/2, y+ySize/2, x+xSize/2, y-ySize/2);
   if (xSize>15 || ySize>15) {
-    tree(x+xSize/2, y-ySize*7/8, 0, (ySize)*3/4);
+    fractalTree(x+xSize/2, y-ySize*7/8, 0, (ySize)*3/4);
     if (xSize==0) {
       xSize=ySize;
       x-=xSize/2;
     }
-    tree(x+xSize*3/4, y-ySize*3/4, xSize/2, ySize/2);
-    tree(x+xSize*1/4, y-ySize*3/4, -xSize/2, ySize/2);
+    fractalTree(x+xSize*3/4, y-ySize*3/4, xSize/2, ySize/2);
+    fractalTree(x+xSize*1/4, y-ySize*3/4, -xSize/2, ySize/2);
   }
 }
 
@@ -67,9 +69,17 @@ class snowFrac {
 }
 void draw() {
   background(0, 0, 0);
-  tree(800, 780, 300, 225);
+  fill(255, 255, 255);
+  tint(150,100,100);
+  image(wood, 180, 630, 200, 120);
+  image(wood, 360, 630, 200, 120);
+  ellipse(100, 100, 100, 100);
+  fill(0, 0, 0);
   noStroke();
-  fireFractal(300, 720, 200);
+  ellipse(135, 100, 90, 90);
+  fractalTree(800, 780, 300*(1-(abs((float)Math.sin(millis()*.00016))*.4)), 225*(1+(abs((float)Math.cos(millis()*.0004))*.03)));
+  noStroke();
+  fireFractal(300, 700, 200);
   noFill();
   if (Math.random()>.995) {
     puffs.add(new snowFrac());
