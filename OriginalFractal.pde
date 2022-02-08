@@ -51,7 +51,7 @@ void fractalTree(float x, float y, float xSize, float ySize) { //recursive fract
   }
 }
 
-void FractalFlake(int x, int y, int xLength, int yLength) { //recursive fractal to draw an easy snowFractalFlake
+void FractalFlake(float x, float y, float xLength, float yLength) { //recursive fractal to draw an easy snowFractalFlake
   line(x-(xLength/2), y-(yLength/2), x+(xLength/2), y+(yLength/2)); //draw the given line of the snowFractalFlake
   if (xLength>5 ||yLength>5) {
     FractalFlake(x+(xLength/3), y+(yLength/3), yLength/2, xLength/2); //call the function to make three lines through the middle of this line
@@ -73,9 +73,9 @@ class snowFrac { //holder class to store the locations and sizes of snowFractalF
     x+=xspeed; //update x position based on speed
     y+=1; //make snowFractalFlake fall
     fade-=.6; //make snowFractalFlake fade
-    stroke(255, 255, 255, (int)fade);
-    FractalFlake((int)x, (int)y, (int) howBig, 0); //draw the snowflake using the fractal
-    FractalFlake((int)x, (int)y, 0, (int)howBig);
+    stroke(255, 255, 255, (float)fade);
+    FractalFlake((float)x, (float)y, (float) howBig, 0); //draw the snowflake using the fractal
+    FractalFlake((float)x, (float)y, 0, (float)howBig);
     if (fade<0) {
       return false; //if it's completely faded, return false so that it will be removed from the arraylist
     }
@@ -96,7 +96,7 @@ void draw() {
   fill(230, 230, 230);
   rect(0, 650, 1100, 50);
 
-  //tint(150, 100, 100); //draw pile of logs
+  //tfloat(150, 100, 100); //draw pile of logs
   //image(wood, 180, 630, 200, 120);
   //image(wood, 360, 630, 200, 120);
   //image(wood, 250, 630, 200, 120);
@@ -110,10 +110,11 @@ void draw() {
 
   noFill(); //periodically add new snowflakes to the scene
   if (random(0,1)>.995) {
-    snow.add(new snowFrac());
+    snowFrac Larry = new snowFrac();
+    snow.add(Larry);
   }
   for (int i=0; i<snow.size(); i++) {
-    if (!snow.get(i).show()) { //draw all the snowflakes
+    if (snow.get(i).show()==false) { //draw all the snowflakes
       snow.remove(i); //if they've faded, remove from memory
       i--;
     }
