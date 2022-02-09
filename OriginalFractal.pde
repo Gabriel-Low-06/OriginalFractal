@@ -60,28 +60,28 @@ void FractalFlake(float x, float y, int xLength, int yLength) { //recursive frac
   }
 }
 
-class snowFrac { //holder class to store the locations and sizes of snowFractalFlake fractals
-  private float x, y, xspeed, howBig, fade;
-  snowFrac() {
-    x=random(250, 800); //initializes the snowFractalFlake somewhere above the screen, with opaque transparency and a random x velocity
-    howBig=random(10, 70);
-    y=random(-100, 0);
-    fade=255;
-    xspeed=random(-2, 2);
-  }
-  boolean show() {
-    x+=xspeed; //update x position based on speed
-    y+=1; //make snowFractalFlake fall
-    fade-=.6; //make snowFractalFlake fade
-    stroke(255, 255, 255, (int)fade);
-    FractalFlake((int)x, (int)y, (int) howBig, 0); //draw the snowflake using the fractal
-    FractalFlake((int)x, (int)y, 0, (int)howBig);
-    if (fade<0) {
-      return false; //if it's completely faded, return false so that it will be removed from the arraylist
-    }
-    return true;
-  }
-}
+//class snowFrac { //holder class to store the locations and sizes of snowFractalFlake fractals
+//  private float x, y, xspeed, howBig, fade;
+//  snowFrac() {
+//    x=random(250, 800); //initializes the snowFractalFlake somewhere above the screen, with opaque transparency and a random x velocity
+//    howBig=random(10, 70);
+//    y=random(-100, 0);
+//    fade=255;
+//    xspeed=random(-2, 2);
+//  }
+//  boolean show() {
+//    x+=xspeed; //update x position based on speed
+//    y+=1; //make snowFractalFlake fall
+//    fade-=.6; //make snowFractalFlake fade
+//    stroke(255, 255, 255, (int)fade);
+//    FractalFlake((int)x, (int)y, (int) howBig, 0); //draw the snowflake using the fractal
+//    FractalFlake((int)x, (int)y, 0, (int)howBig);
+//    if (fade<0) {
+//      return false; //if it's completely faded, return false so that it will be removed from the arraylist
+//    }
+//    return true;
+//  }
+//}
 void draw() {
   background(0, 0, 50); //reset frame
 
