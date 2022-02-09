@@ -1,10 +1,11 @@
 void setup() {
   size(1100, 700);
-wood=loadImage("firewood-lumberjack-log-splitters-wood-78689ed69d835690b2628f3106915222.png");  //snow  = new ArrayList<snowFrac>();
+wood=loadImage("firewood-lumberjack-log-splitters-wood-78689ed69d835690b2628f3106915222.png");  
+snow  = new ArrayList<snowFrac>();
   //load image of logs, initialize arraylist of snowFractalFlakes
 }
 PImage wood; //declare image of wood and snowFractalFlakes
-//ArrayList<snowFrac>snow;
+ArrayList<snowFrac>snow;
 void mountain(float x, float y, float size) {
   noStroke();
   if (size>70) {
@@ -50,37 +51,37 @@ void fractalTree(float x, float y, float xSize, float ySize) { //recursive fract
   }
 }
 
-//void FractalFlake(float x, float y, int xLength, int yLength) { //recursive fractal to draw an easy snowFractalFlake
-//  line(x-(xLength/2), y-(yLength/2), x+(xLength/2), y+(yLength/2)); //draw the given line of the snowFractalFlake
-//  if (xLength>5 ||yLength>5) {
-//    FractalFlake(x+(xLength/3), y+(yLength/3), yLength/2, xLength/2); //call the function to make three lines through the middle of this line
-//    FractalFlake(x-(xLength/3), y-(yLength/3), yLength/2, xLength/2);
-//    FractalFlake(x, y, yLength/2, xLength/2);
-//  }
-//}
+void FractalFlake(float x, float y, int xLength, int yLength) { //recursive fractal to draw an easy snowFractalFlake
+  line(x-(xLength/2), y-(yLength/2), x+(xLength/2), y+(yLength/2)); //draw the given line of the snowFractalFlake
+  if (xLength>5 ||yLength>5) {
+    FractalFlake(x+(xLength/3), y+(yLength/3), yLength/2, xLength/2); //call the function to make three lines through the middle of this line
+    FractalFlake(x-(xLength/3), y-(yLength/3), yLength/2, xLength/2);
+    FractalFlake(x, y, yLength/2, xLength/2);
+  }
+}
 
-//class snowFrac { //holder class to store the locations and sizes of snowFractalFlake fractals
-//  private float x, y, xspeed, howBig, fade;
-//  snowFrac() {
-//    x=random(250, 800); //initializes the snowFractalFlake somewhere above the screen, with opaque transparency and a random x velocity
-//    howBig=random(10, 70);
-//    y=random(-100, 0);
-//    fade=255;
-//    xspeed=random(-2, 2);
-//  }
-//  boolean show() {
-//    x+=xspeed; //update x position based on speed
-//    y+=1; //make snowFractalFlake fall
-//    fade-=.6; //make snowFractalFlake fade
-//    stroke(255, 255, 255, (int)fade);
-//    FractalFlake((int)x, (int)y, (int) howBig, 0); //draw the snowflake using the fractal
-//    FractalFlake((int)x, (int)y, 0, (int)howBig);
-//    if (fade<0) {
-//      return false; //if it's completely faded, return false so that it will be removed from the arraylist
-//    }
-//    return true;
-//  }
-//}
+class snowFrac { //holder class to store the locations and sizes of snowFractalFlake fractals
+  private float x, y, xspeed, howBig, fade;
+  snowFrac() {
+    x=random(250, 800); //initializes the snowFractalFlake somewhere above the screen, with opaque transparency and a random x velocity
+    howBig=random(10, 70);
+    y=random(-100, 0);
+    fade=255;
+    xspeed=random(-2, 2);
+  }
+  boolean show() {
+    x+=xspeed; //update x position based on speed
+    y+=1; //make snowFractalFlake fall
+    fade-=.6; //make snowFractalFlake fade
+    stroke(255, 255, 255, (int)fade);
+    FractalFlake((int)x, (int)y, (int) howBig, 0); //draw the snowflake using the fractal
+    FractalFlake((int)x, (int)y, 0, (int)howBig);
+    if (fade<0) {
+      return false; //if it's completely faded, return false so that it will be removed from the arraylist
+    }
+    return true;
+  }
+}
 void draw() {
   background(0, 0, 50); //reset frame
 
