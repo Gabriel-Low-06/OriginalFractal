@@ -51,14 +51,14 @@ void fractalTree(float x, float y, float xSize, float ySize) { //recursive fract
   }
 }
 
-void FractalFlake(float x, float y, int xLength, int yLength) { //recursive fractal to draw an easy snowFractalFlake
-  line(x-(xLength/2), y-(yLength/2), x+(xLength/2), y+(yLength/2)); //draw the given line of the snowFractalFlake
-  if (xLength>5 ||yLength>5) {
-    FractalFlake(x+(xLength/3), y+(yLength/3), yLength/2, xLength/2); //call the function to make three lines through the middle of this line
-    FractalFlake(x-(xLength/3), y-(yLength/3), yLength/2, xLength/2);
-    FractalFlake(x, y, yLength/2, xLength/2);
-  }
-}
+//void FractalFlake(float x, float y, int xLength, int yLength) { //recursive fractal to draw an easy snowFractalFlake
+//  line(x-(xLength/2), y-(yLength/2), x+(xLength/2), y+(yLength/2)); //draw the given line of the snowFractalFlake
+//  if (xLength>5 ||yLength>5) {
+//    FractalFlake(x+(xLength/3), y+(yLength/3), yLength/2, xLength/2); //call the function to make three lines through the middle of this line
+//    FractalFlake(x-(xLength/3), y-(yLength/3), yLength/2, xLength/2);
+//    FractalFlake(x, y, yLength/2, xLength/2);
+//  }
+//}
 
 //class snowFrac { //holder class to store the locations and sizes of snowFractalFlake fractals
 //  private float x, y, xspeed, howBig, fade;
