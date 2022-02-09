@@ -1,11 +1,11 @@
 void setup() {
   size(1100, 700);
 wood=loadImage("firewood-lumberjack-log-splitters-wood-78689ed69d835690b2628f3106915222.png");  
-snow  = new ArrayList<snowFrac>();
+//snow  = new ArrayList<snowFrac>();
   //load image of logs, initialize arraylist of snowFractalFlakes
 }
 PImage wood; //declare image of wood and snowFractalFlakes
-ArrayList<snowFrac>snow;
+//ArrayList<snowFrac>snow;
 void mountain(float x, float y, float size) {
   noStroke();
   if (size>70) {
