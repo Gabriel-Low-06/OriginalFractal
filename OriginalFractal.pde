@@ -6,17 +6,17 @@ wood=loadImage("firewood-lumberjack-log-splitters-wood-78689ed69d835690b2628f310
 }
 PImage wood; //declare image of wood and snowFractalFlakes
 //ArrayList<snowFrac>snow;
-void mountain(float x, float y, float size) {
+void mountain(float x, float y, float howBig) {
   noStroke();
-  if (size>70) {
+  if (howBig>70) {
     fill(constrain((600-y)*.6, 10, 155), 160, (constrain((300-y)*.5, 10, 135)));
-    mountain(x+size*2/3, y, size*.7);
-    triangle(x, y, x+size, y, x+size/2, y-size);
-    if (size>200) {
+    mountain(x+howBig*2/3, y, howBig*.7);
+    triangle(x, y, x+howBig, y, x+howBig/2, y-howBig);
+    if (howBig>200) {
       fill(205, 205, 205);
-      triangle(x+size/3, y-size*2/3, x+size*2/3, y-size*2/3, x+size/2, y-size);
+      triangle(x+howBig/3, y-howBig*2/3, x+howBig*2/3, y-howBig*2/3, x+howBig/2, y-howBig);
     }
-    mountain(x-size*4/5, y-size/3, size*.9);
+    mountain(x-howBig*4/5, y-howBig/3, howBig*.9);
   }
 }
 void fireFractal(float x, float y, float howBig) { //recursive code to generate fire
@@ -59,7 +59,7 @@ void fractalTree(float x, float y, float xSize, float ySize) { //recursive fract
 //    FractalFlake(x, y, yLength/2, xLength/2);
 //  }
 //}
-
+//
 //class snowFrac { //holder class to store the locations and sizes of snowFractalFlake fractals
 //  private float x, y, xspeed, howBig, fade;
 //  snowFrac() {
