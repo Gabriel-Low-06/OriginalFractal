@@ -1,9 +1,10 @@
 void setup() {
   size(1100, 700);
-wood=loadImage("firewood-lumberjack-log-splitters-wood-78689ed69d835690b2628f3106915222.png");  //snow  = new ArrayList<snowFrac>();
+  //wood = loadImage("logpile.png");
+  //snow  = new ArrayList<snowFrac>();
   //load image of logs, initialize arraylist of snowFractalFlakes
 }
-PImage wood; //declare image of wood and snowFractalFlakes
+//PImage wood; //declare image of wood and snowFractalFlakes
 //ArrayList<snowFrac>snow;
 void mountain(float x, float y, float size) {
   noStroke();
@@ -95,10 +96,10 @@ void draw() {
   fill(230, 230, 230);
   rect(0, 650, 1100, 50);
 
-  tint(150, 100, 100); //draw pile of logs
-  image(wood, 180, 630, 200, 120);
-  image(wood, 360, 630, 200, 120);
-  image(wood, 250, 630, 200, 120);
+  //tint(150, 100, 100); //draw pile of logs
+  //image(wood, 180, 630, 200, 120);
+  //image(wood, 360, 630, 200, 120);
+  //image(wood, 250, 630, 200, 120);
 
 
   fractalTree(800, 780, 300*(1-(abs((float)sin(millis()*.00016))*.4)), 225*(1+(abs((float)cos(millis()*.0004))*.03)));
