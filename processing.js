@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 // build script for generating processing.js
 
 var Browser = {
@@ -22,38 +22,22 @@ var Browser = {
 
 window.Processing = require('./src/')(Browser);
 
-},{"./src/":28}],2:[function(require,module,exports){
+},{"./src/":27}],2:[function(require,module,exports){
 module.exports={
-  "name": "processing-js",
-  "version": "1.6.6",
-  "author": "Processing.js",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com/processing-js/processing-js.git"
-  },
-  "main": "processing.min.js",
-  "bugs": "https://github.com/processing-js/processing-js/issues",
-  "devDependencies": {
+  "name": "Processing.js",
+  "version": "1.4.8",
+  "dependencies": {
     "argv": "~0.0.2",
-    "browserify": "^11.0.1",
+    "browserify": "~2.18.1",
     "express": "~3.3.3",
-    "grunt": "~0.4.1",
-    "grunt-cli": "~0.1.8",
-    "grunt-contrib-jshint": "~0.4.3",
-    "http-server": "^0.9.0",
-    "minifier": "^0.7.1",
     "node-minify": "~0.7.3",
     "nunjucks": "~0.1.9",
     "open": "0.0.3"
   },
-  "scripts": {
-    "test": "node test",
-    "test:manual": "http-server -o test/manual",
-    "start": "browserify build.js -o processing.js && minify --output processing.min.js processing.js"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "minifier": "^0.7.1"
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.8",
+    "grunt-contrib-jshint": "~0.4.3"
   }
 }
 
@@ -253,12 +237,6 @@ module.exports = {
     SPHERE:         40,
     BOX:            41,
 
-    // Arc drawing modes
-    //OPEN:          1, // shared with Shape closing modes   
-    CHORD:           2,
-    PIE:             3, 
-
-
     GROUP:          0,
     PRIMITIVE:      1,
     //PATH:         21, // shared with Shape PATH
@@ -389,151 +367,6 @@ module.exports = {
 };
 
 },{}],5:[function(require,module,exports){
-// the logger for print() and println()
-module.exports = function PjsConsole(document) {
-  var e = { BufferMax: 200 },
-      style = document.createElement("style"),
-      added = false;
-
-  style.textContent = [
-    ".pjsconsole.hidden {",
-    "  display: none!important;",
-    "}"
-  ].join('\n');
-
-  e.wrapper = document.createElement("div");
-  style.textContent += [
-    "",
-    ".pjsconsole {",
-    "  opacity: .75;",
-    "  display: block;",
-    "  position: fixed;",
-    "  bottom: 0px;",
-    "  left: 0px;",
-    "  right: 0px;",
-    "  height: 50px;",
-    "  background-color: #aaa;",
-    "}"
-  ].join('\n');
-  e.wrapper.classList.add("pjsconsole");
-
-  e.dragger = document.createElement("div");
-  style.textContent += [
-    "",
-    ".pjsconsole .dragger {",
-    "  display: block;",
-    "  border: 3px black raised;",
-    "  cursor: n-resize;",
-    "  position: absolute;",
-    "  top: 0px;",
-    "  left: 0px;",
-    "  right: 0px;",
-    "  height: 5px;",
-    "  background-color: #333;",
-    "}"
-  ].join('\n');
-  e.dragger.classList.add("dragger");
-
-  e.closer = document.createElement("div");
-  style.textContent += [
-    "",
-    ".pjsconsole .closer {",
-    "  opacity: .5;",
-    "  display: block;",
-    "  border: 3px black raised;",
-    "  position: absolute;",
-    "  top: 10px;",
-    "  right: 30px;",
-    "  height: 20px;",
-    "  width: 20px;",
-    "  background-color: #ddd;",
-    "  color: #000;",
-    "  line-height: 20px;",
-    "  text-align: center;",
-    "  cursor: pointer",
-    "}"
-  ].join('\n');
-  e.closer.classList.add("closer");
-  e.closer.innerHTML = "&#10006;";
-
-  e.javaconsole = document.createElement("div");
-  style.textContent += [
-    "",
-    ".pjsconsole .console {",
-    "  overflow-x: auto;",
-    "  display: block;",
-    "  position: absolute;",
-    "  left: 10px;",
-    "  right: 0px;",
-    "  bottom: 5px;",
-    "  top: 10px;",
-    "  overflow-y: scroll;",
-    "  height: 40px;",
-    "}"
-  ].join('\n');
-  e.javaconsole.setAttribute("class", "console");
-
-  e.wrapper.appendChild(e.dragger);
-  e.wrapper.appendChild(e.javaconsole);
-  e.wrapper.appendChild(e.closer);
-
-  e.dragger.onmousedown = function (t) {
-    e.divheight = e.wrapper.style.height;
-    if (document.selection) document.selection.empty();
-    else window.getSelection().removeAllRanges();
-    var n = t.screenY;
-    window.onmousemove = function (t) {
-      e.wrapper.style.height = parseFloat(e.divheight) + (n - t.screenY) + "px";
-      e.javaconsole.style.height = parseFloat(e.divheight) + (n - t.screenY) - 10 + "px";
-    };
-    window.onmouseup = function (t) {
-      if (document.selection) document.selection.empty();
-      else window.getSelection().removeAllRanges();
-      e.wrapper.style.height = parseFloat(e.divheight) + (n - t.screenY) + "px";
-      e.javaconsole.style.height = parseFloat(e.divheight) + (n - t.screenY) - 10 + "px";
-      window.onmousemove = null;
-      window.onmouseup = null;
-    };
-  };
-
-  e.BufferArray = [];
-
-  e.print = e.log = function () {
-    if(!added) {
-      document.body.appendChild(style);
-      document.body.appendChild(e.wrapper);
-      added = true;
-    }
-    var args = Array.prototype.slice.call(arguments);
-    t = args.map(function(t, idx) { return t + (idx+1 === args.length ? "" : " "); }).join('');
-    if (e.BufferArray[e.BufferArray.length - 1]) e.BufferArray[e.BufferArray.length - 1] += (t) + "";
-    else e.BufferArray.push(t);
-    e.javaconsole.innerHTML = e.BufferArray.join('');
-    e.showconsole();
-  };
-
-  e.println = function () {
-    var args = Array.prototype.slice.call(arguments);
-    args.push('<br>');
-    e.print.apply(e, args);
-    if (e.BufferArray.length > e.BufferMax) {
-      e.BufferArray.splice(0, 1);
-    } else {
-      e.javaconsole.scrollTop = e.javaconsole.scrollHeight;
-    }
-  };
-
-  e.showconsole = function () { e.wrapper.classList.remove("hidden"); };
-  e.hideconsole = function () { e.wrapper.classList.add("hidden"); };
-
-  e.closer.onclick = function () { e.hideconsole(); };
-
-  e.hideconsole();
-
-  return e;
-};
-
-},{}],6:[function(require,module,exports){
 /**
  * Processing.js default scope
  */
@@ -764,7 +597,7 @@ module.exports = function(options) {
   return defaultScope;
 };
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /**
  * Finalise the Processing.js object.
  */
@@ -917,9 +750,8 @@ module.exports = function finalizeProcessing(Processing, options) {
    * source and bind to canvas via new Processing(canvas, sourcestring).
    * @param {CANVAS} canvas The html canvas element to bind to
    * @param {String[]} source The array of files that must be loaded
-   * @param {Function} onComplete A callback, called with the sketch as the argument.
    */
-  var loadSketchFromSources = Processing.loadSketchFromSources = function(canvas, sources, onComplete) {
+  var loadSketchFromSources = Processing.loadSketchFromSources = function(canvas, sources) {
     var code = [], errors = [], sourcesCount = sources.length, loaded = 0;
 
     function ajaxAsync(url, callback) {
@@ -960,10 +792,11 @@ module.exports = function finalizeProcessing(Processing, options) {
         }
         if (loaded === sourcesCount) {
           if (errors.length === 0) {
-            // This used to throw, but it was constantly getting in the way of debugging where things go wrong!
-            var sketch = new Processing(canvas, code.join("\n"));
-            if (onComplete) {
-              onComplete(sketch);
+            try {
+              return new Processing(canvas, code.join("\n"));
+            } catch(e) {
+              console.log("Processing.js: Unable to execute pjs sketch.");
+              throw e;
             }
           } else {
             throw "Processing.js: Unable to load pjs sketch files: " + errors.join("\n");
@@ -994,23 +827,17 @@ module.exports = function finalizeProcessing(Processing, options) {
    */
   var init = function() {
     document.removeEventListener('DOMContentLoaded', init, false);
-    var i;
 
     // before running through init, clear the instances list, to prevent
     // sketch duplication when page content is dynamically swapped without
     // swapping out processing.js
-    while (Processing.instances.length > 0) {
-      for (i = Processing.instances.length - 1; i >= 0; i--) {
-        if (Processing.instances[i]) {
-          Processing.instances[i].exit();
-        }
-      }
-    }
+    processingInstances = [];
+    Processing.instances = processingInstances;
 
     var canvas = document.getElementsByTagName('canvas'),
       filenames;
 
-    for (i = 0, l = canvas.length; i < l; i++) {
+    for (var i = 0, l = canvas.length; i < l; i++) {
       // datasrc and data-src are deprecated.
       var processingSources = canvas[i].getAttribute('data-processing-sources');
       if (processingSources === null) {
@@ -1090,7 +917,18 @@ module.exports = function finalizeProcessing(Processing, options) {
    * been set up for a page. This function exists mostly for pages
    * that swap content in/out without reloading a page.
    */
-  Processing.reload = init;
+  Processing.reload = function() {
+    if (processingInstances.length > 0) {
+      // unload sketches
+      for (var i = processingInstances.length - 1; i >= 0; i--) {
+        if (processingInstances[i]) {
+          processingInstances[i].exit();
+        }
+      }
+    }
+    // rerun init() to scan the DOM for sketches
+    init();
+  };
 
   /**
    * Disable the automatic loading of all sketches on the page.
@@ -1103,8 +941,7 @@ module.exports = function finalizeProcessing(Processing, options) {
   // done.
   return Processing;
 };
-
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * Returns Java equals() result for two objects. If the first object
  * has the "equals" function, it preforms the call of this function.
@@ -1131,7 +968,7 @@ module.exports = function virtEquals(obj, other) {
   return obj === other;
 };
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Returns Java hashCode() result for the object. If the object has the "hashCode" function,
  * it preforms the call of this function. Otherwise it uses/creates the "$id" property,
@@ -1160,7 +997,7 @@ module.exports = function virtHashCode(obj, undef) {
   return obj.$id;
 };
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * An ArrayList stores a variable number of objects.
  *
@@ -1438,7 +1275,7 @@ module.exports = function(options) {
   return ArrayList;
 };
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = (function(charMap, undef) {
 
   var Char = function(chr) {
@@ -1465,7 +1302,7 @@ module.exports = (function(charMap, undef) {
   return Char;
 }({}));
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
 * A HashMap stores a collection of objects, each referenced by a key. This is similar to an Array, only
 * instead of accessing elements with a numeric index, a String  is used. (If you are familiar with
@@ -1878,7 +1715,7 @@ module.exports = function(options) {
   return HashMap;
 };
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 // module export
 module.exports = function(options,undef) {
   var window = options.Browser.window,
@@ -2171,7 +2008,7 @@ module.exports = function(options,undef) {
 
       // set up the template element
       var element = document.createElement("span");
-      element.style.cssText = 'position: absolute; top: -1000; left: 0; opacity: 0; font-family: "PjsEmptyFont", fantasy;';
+      element.style.cssText = 'position: absolute; top: 0; left: 0; opacity: 0; font-family: "PjsEmptyFont", fantasy;';
       element.innerHTML = "AAAAAAAA";
       document.body.appendChild(element);
       this.template = element;
@@ -2253,7 +2090,7 @@ module.exports = function(options,undef) {
 
   return PFont;
 };
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = function(options, undef) {
 
   // FIXME: hack
@@ -2509,7 +2346,7 @@ module.exports = function(options, undef) {
      * @param {float} sy  the amount to scale on the y-axis
      */
     scale: function(sx, sy) {
-      if (sx && sy === undef) {
+      if (sx && !sy) {
         sy = sx;
       }
       if (sx && sy) {
@@ -2650,7 +2487,7 @@ module.exports = function(options, undef) {
   return PMatrix2D;
 };
 
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = function(options, undef) {
 
   // FIXME: hack
@@ -3034,9 +2871,9 @@ module.exports = function(options, undef) {
      * @param {float} sz  the amount to scale on the z-axis
      */
     scale: function(sx, sy, sz) {
-      if (sx && sy === undef && sz === undef) {
+      if (sx && !sy && !sz) {
         sy = sz = sx;
-      } else if (sx && sy && sz === undef) {
+      } else if (sx && sy && !sz) {
         sz = 1;
       }
 
@@ -3248,7 +3085,7 @@ module.exports = function(options, undef) {
 
   return PMatrix3D;
 };
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = function(options) {
   var PConstants = options.PConstants,
       PMatrix2D = options.PMatrix2D,
@@ -3910,7 +3747,7 @@ module.exports = function(options) {
 
   return PShape;
 };
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * SVG stands for Scalable Vector Graphics, a portable graphics format. It is
  * a vector format so it allows for infinite resolution and relatively small
@@ -4057,7 +3894,8 @@ module.exports = function(options) {
 
   };
   /**
-   * PShapeSVG methods are inherited from the PShape prototype
+   * PShapeSVG methods
+   * missing: getChild(), print(), parseStyleAttributes(), styles() - deals with strokeGradient and fillGradient
    */
   PShapeSVG.prototype = new PShape();
   /**
@@ -5002,7 +4840,7 @@ module.exports = function(options) {
   return PShapeSVG;
 };
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = function(options, undef) {
   var PConstants = options.PConstants;
 
@@ -5056,7 +4894,7 @@ module.exports = function(options, undef) {
   };
 
   PVector.angleBetween = function(v1, v2) {
-    return Math.acos(v1.dot(v2) / Math.sqrt(v1.magSq() * v2.magSq()));
+    return Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()));
   };
 
   PVector.lerp = function(v1, v2, amt) {
@@ -5111,10 +4949,6 @@ module.exports = function(options, undef) {
         this.x += v.x;
         this.y += v.y;
         this.z += v.z;
-      } else if (arguments.length === 2) {
-        // 2D Vector
-        this.x += v;
-        this.y += y;
       } else {
         this.x += v;
         this.y += y;
@@ -5126,10 +4960,6 @@ module.exports = function(options, undef) {
         this.x -= v.x;
         this.y -= v.y;
         this.z -= v.z;
-      } else if (arguments.length === 2) {
-        // 2D Vector
-        this.x -= v;
-        this.y -= y;
       } else {
         this.x -= v;
         this.y -= y;
@@ -5248,7 +5078,8 @@ module.exports = function(options, undef) {
   return PVector;
 };
 
-},{}],19:[function(require,module,exports){
+
+},{}],18:[function(require,module,exports){
 /**
  * XMLAttribute is an attribute of a XML element.
  *
@@ -5330,7 +5161,7 @@ module.exports = function() {
   return XMLAttribute;
 };
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * XMLElement is a representation of an XML object. The object is able to parse XML code
  *
@@ -5376,8 +5207,8 @@ module.exports = function(options, undef) {
           this.lineNr = line;
         }
       } else {
-        // XMLElement(this, file uri) format
-        this.parse(uri, true);
+        // XMLElement(this,file) format
+        this.parse(uri);
       }
     }
   };
@@ -5399,10 +5230,11 @@ module.exports = function(options, undef) {
      *
      * @see XMLElement#parseChildrenRecursive
      */
-    parse: function(textstring, stringIsURI) {
+    parse: function(textstring) {
       var xmlDoc;
       try {
-        if (stringIsURI) {
+        var extension = textstring.substring(textstring.length-4);
+        if (extension === ".xml" || extension === ".svg") {
           textstring = ajax(textstring);
         }
         xmlDoc = new DOMParser().parseFromString(textstring, "text/xml");
@@ -6089,11 +5921,11 @@ module.exports = function(options, undef) {
     toString: function() {
       // shortcut for text and cdata nodes
       if (this.type === "TEXT") {
-        return this.content || "";
+        return this.content;
       }
 
       if (this.type === "CDATA") {
-        return this.cdata || "";
+        return this.cdata;
       }
 
       // real XMLElements
@@ -6109,7 +5941,7 @@ module.exports = function(options, undef) {
 
       // serialize all children to XML string
       if (this.children.length === 0) {
-        if (this.content === "" || this.content === null || this.content === undefined) {
+        if (this.content==="") {
           xmlstring += "/>";
         } else {
           xmlstring += ">" + this.content + "</"+tagstring+">";
@@ -6138,7 +5970,7 @@ module.exports = function(options, undef) {
   return XMLElement;
 };
 
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /**
  * web colors, by name
  */
@@ -6285,7 +6117,7 @@ module.exports = {
     yellowgreen:          "#9acd32"
   };
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = function(virtHashCode, virtEquals, undef) {
 
   return function withProxyFunctions(p, removeFirstArgument) {
@@ -6582,7 +6414,7 @@ module.exports = function(virtHashCode, virtEquals, undef) {
 
 };
 
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * For many "math" functions, we can delegate
  * to the Math object. For others, we can't.
@@ -7010,26 +6842,15 @@ module.exports = function withMath(p, undef) {
   * @see randomSeed
   * @see noise
   */
-  p.random = function(aMin, aMax) {
-    if (arguments.length === 0) {
-      aMax = 1;
-      aMin = 0;
-    } else if (arguments.length === 1) {
-      aMax = aMin;
-      aMin = 0;
+  p.random = function() {
+    if(arguments.length === 0) {
+      return internalRandomGenerator();
     }
-    if (aMin === aMax) {
-      return aMin;
+    if(arguments.length === 1) {
+      return internalRandomGenerator() * arguments[0];
     }
-    for (var i = 0; i < 100; i++) {
-      var ir = internalRandomGenerator();
-      var result = ir * (aMax - aMin) + aMin;
-      if (result !== aMax) {
-        return result;
-      }
-      // assertion: ir is never less than 0.5
-    }
-    return aMin;
+    var aMin = arguments[0], aMax = arguments[1];
+    return internalRandomGenerator() * (aMax - aMin) + aMin;
   };
 
   // Pseudo-random generator
@@ -7066,7 +6887,7 @@ module.exports = function withMath(p, undef) {
   * @see noiseSeed
   */
   p.randomSeed = function(seed) {
-    internalRandomGenerator = (new Marsaglia(seed, (seed<<16)+(seed>>16))).doubleGenerator;
+    internalRandomGenerator = (new Marsaglia(seed)).doubleGenerator;
     this.haveNextNextGaussian = false;
   };
 
@@ -7104,22 +6925,14 @@ module.exports = function withMath(p, undef) {
 
   // Noise functions and helpers
   function PerlinNoise(seed) {
-    var rnd = seed !== undef ? new Marsaglia(seed, (seed<<16)+(seed>>16)) : Marsaglia.createRandomized();
+    var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
     var i, j;
     // http://www.noisemachine.com/talk1/17b.html
     // http://mrl.nyu.edu/~perlin/noise/
     // generate permutation
     var perm = new Uint8Array(512);
     for(i=0;i<256;++i) { perm[i] = i; }
-    for(i=0;i<256;++i) {
-      // NOTE: we can only do this because we've made sure the Marsaglia generator
-      //       gives us numbers where the last byte in a pseudo-random number is
-      //       still pseudo-random. If no 2nd argument is passed in the constructor,
-      //       that is no longer the case and this pair swap will always run identically.
-      var t = perm[j = rnd.intGenerator() & 0xFF];
-      perm[j] = perm[i];
-      perm[i] = t;
-    }
+    for(i=0;i<256;++i) { var t = perm[j = rnd.intGenerator() & 0xFF]; perm[j] = perm[i]; perm[i] = t; }
     // copy to avoid taking mod in perm[0];
     for(i=0;i<256;++i) { perm[i + 256] = perm[i]; }
 
@@ -7272,7 +7085,7 @@ module.exports = function withMath(p, undef) {
   };
 };
 
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /**
  * Common functions traditionally on "p" that should be class functions
  * that get bound to "p" when an instance is actually built, instead.
@@ -7506,14 +7319,11 @@ module.exports = (function commonFunctions(undef) {
   return CommonFunctions;
 }());
 
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /**
  * Touch and Mouse event handling
  */
-module.exports = function withTouch(p, curElement, attachEventHandler, detachEventHandlersByType, document, PConstants, undef) {
-
-  // List of mouse event types
-  var mouseTypes = ['mouseout','mousemove','mousedown','mouseup','DOMMouseScroll','mousewheel','touchstart'];
+module.exports = function withTouch(p, curElement, attachEventHandler, document, PConstants, undef) {
 
   /**
    * Determine the location of the (mouse) pointer.
@@ -7608,9 +7418,16 @@ module.exports = function withTouch(p, curElement, attachEventHandler, detachEve
     curElement.setAttribute("style","-webkit-user-select: none");
     curElement.setAttribute("onclick","void(0)");
     curElement.setAttribute("style","-webkit-tap-highlight-color:rgba(0,0,0,0)");
-
-    // Remove mouse-type event listeners
-    detachEventHandlersByType(curElement, mouseTypes);
+    // Loop though eventHandlers and remove mouse listeners
+    for (var i=0, ehl=eventHandlers.length; i<ehl; i++) {
+      var type = eventHandlers[i].type;
+      // Have this function remove itself from the eventHandlers list too
+      if (type === "mouseout" ||  type === "mousemove" ||
+          type === "mousedown" || type === "mouseup" ||
+          type === "DOMMouseScroll" || type === "mousewheel" || type === "touchstart") {
+        detachEventHandler(eventHandlers[i]);
+      }
+    }
 
     // If there are any native touch events defined in the sketch, connect all of them
     // Otherwise, connect all of the emulated mouse events
@@ -7686,6 +7503,9 @@ module.exports = function withTouch(p, curElement, attachEventHandler, detachEve
         }
       });
     }
+
+    // Refire the touch start event we consumed in this function
+    curElement.dispatchEvent(t);
   });
 
   /**
@@ -7802,9 +7622,6 @@ module.exports = function withTouch(p, curElement, attachEventHandler, detachEve
    * Unofficial scroll wheel handling.
    */
   var mouseWheelHandler = function(e) {
-    // do not handle scroll wheel if initiated outside of the sketch
-    if (e.target !== curElement) return;
-
     var delta = 0;
 
     if (e.wheelDelta) {
@@ -7819,11 +7636,6 @@ module.exports = function withTouch(p, curElement, attachEventHandler, detachEve
     p.mouseScroll = delta;
 
     if (delta && typeof p.mouseScrolled === 'function') {
-      // If this sketch has explicit scroll handling,
-      // prevent scroll from kicking in globally before
-      // calling the scroll handler.
-      e.stopPropagation();
-      e.preventDefault();   
       p.mouseScrolled();
     }
   };
@@ -7834,8 +7646,7 @@ module.exports = function withTouch(p, curElement, attachEventHandler, detachEve
 
 };
 
-
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /**
  * The parser for turning Processing syntax into Pjs JavaScript.
  * This code is not trivial; unless you know what you're doing,
@@ -7881,8 +7692,8 @@ module.exports = function setupParser(Processing, options) {
       "noCursor", "noFill", "noise", "noiseDetail", "noiseSeed", "noLights",
       "noLoop", "norm", "normal", "noSmooth", "noStroke", "noTint", "ortho",
       "param", "parseBoolean", "parseByte", "parseChar", "parseFloat",
-      "parseInt", "parseXML", "peg", "perspective", "PImage", "pixels",
-      "PMatrix2D", "PMatrix3D", "PMatrixStack", "pmouseX", "pmouseY", "point",
+      "parseInt", "peg", "perspective", "PImage", "pixels", "PMatrix2D",
+      "PMatrix3D", "PMatrixStack", "pmouseX", "pmouseY", "point",
       "pointLight", "popMatrix", "popStyle", "pow", "print", "printCamera",
       "println", "printMatrix", "printProjection", "PShape", "PShapeSVG",
       "pushMatrix", "pushStyle", "quad", "radians", "random", "randomGaussian",
@@ -9574,14 +9385,95 @@ module.exports = function setupParser(Processing, options) {
     return sketch;
   };
 
-  var PjsConsole = require("../Helpers/PjsConsole");
+  // the logger for println()
+  var PjsConsole = function (document) {
+    var e = {}, added = false;
+    e.BufferMax = 200;
+    e.wrapper = document.createElement("div");
+    e.wrapper.setAttribute("style", "opacity:.75;display:block;position:fixed;bottom:0px;left:0px;right:0px;height:50px;background-color:#aaa");
+    e.dragger = document.createElement("div");
+    e.dragger.setAttribute("style", "display:block;border:3px black raised;cursor:n-resize;position:absolute;top:0px;left:0px;right:0px;height:5px;background-color:#333");
+    e.closer = document.createElement("div");
+    e.closer.onmouseover = function () {
+      e.closer.style.setProperty("background-color", "#ccc");
+    };
+    e.closer.onmouseout = function () {
+      e.closer.style.setProperty("background-color", "#ddd");
+    };
+    e.closer.innerHTML = "&#10006;";
+    e.closer.setAttribute("style", "opacity:.5;display:block;border:3px black raised;position:absolute;top:10px;right:30px;height:20px;width:20px;background-color:#ddd;color:#000;line-height:20px;text-align:center;cursor:pointer;");
+    e.javaconsole = document.createElement("div");
+    e.javaconsole.setAttribute("style", "overflow-x: auto;display:block;position:absolute;left:10px;right:0px;bottom:5px;top:10px;overflow-y:scroll;height:40px;");
+    e.wrapper.appendChild(e.dragger);
+    e.wrapper.appendChild(e.javaconsole);
+    e.wrapper.appendChild(e.closer);
+    e.dragger.onmousedown = function (t) {
+      e.divheight = e.wrapper.style.height;
+      if (document.selection) document.selection.empty();
+      else window.getSelection().removeAllRanges();
+      var n = t.screenY;
+      window.onmousemove = function (t) {
+        e.wrapper.style.height = parseFloat(e.divheight) + (n - t.screenY) + "px";
+        e.javaconsole.style.height = parseFloat(e.divheight) + (n - t.screenY) - 10 + "px";
+      };
+      window.onmouseup = function (t) {
+        if (document.selection) document.selection.empty();
+        else window.getSelection().removeAllRanges();
+        e.wrapper.style.height = parseFloat(e.divheight) + (n - t.screenY) + "px";
+        e.javaconsole.style.height = parseFloat(e.divheight) + (n - t.screenY) - 10 + "px";
+        window.onmousemove = null;
+        window.onmouseup = null;
+      };
+    };
+    e.BufferArray = [];
+    e.print = e.log = function (t) {
+      // var oldheight = e.javaconsole.scrollHeight-e.javaconsole.scrollTop;
+      if (e.BufferArray[e.BufferArray.length - 1]) e.BufferArray[e.BufferArray.length - 1] += (t) + "";
+      else e.BufferArray.push(t);
+      e.javaconsole.innerHTML = e.BufferArray.join('');
+      if (e.wrapper.style.visibility === "hidden") {
+        e.wrapper.style.visibility = "visible";
+      }
+      //if (e.BufferArray.length > e.BufferMax) e.BufferArray.splice(0, 1);
+      //else e.javaconsole.scrollTop = oldheight;
+      if (e.wrapper.style.visibility === "hidden") {
+        e.wrapper.style.visibility = "visible";
+      }
+    };
+    e.println = function (t) {
+      if(!added) { document.body.appendChild(e.wrapper); }
+      e.print(t);
+      e.BufferArray.push('<br/>');
+      e.javaconsole.innerHTML = e.BufferArray.join('');
+      if (e.wrapper.style.visibility === "hidden") {
+        e.wrapper.style.visibility = "visible";
+      }
+      if (e.BufferArray.length > e.BufferMax) e.BufferArray.splice(0, 1);
+      else e.javaconsole.scrollTop = e.javaconsole.scrollHeight;
+      if (e.wrapper.style.visibility === "hidden") {
+        e.wrapper.style.visibility = "visible";
+      }
+    };
+    e.showconsole = function () {
+      e.wrapper.style.visibility = "visible";
+    };
+    e.hideconsole = function () {
+      e.wrapper.style.visibility = "hidden";
+    };
+    e.closer.onclick = function () {
+      e.hideconsole();
+    };
+    e.hideconsole();
+    return e;
+  };
+
   Processing.logger = new PjsConsole(document);
 
   // done
   return Processing;
 };
 
-},{"../Helpers/PjsConsole":5}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 /**
  * Processing.js object
  */
@@ -9607,12 +9499,8 @@ module.exports = function setupParser(Processing, options) {
 
   // fascinating "read only" jshint error if we don't start a new var block here.
   var HTMLCanvasElement = window.HTMLCanvasElement,
-      HTMLImageElement = window.HTMLImageElement;
-
-  // window.localStorage cannot be accessed if a user is blocking cookies.
-  // In that case, we make it a temporary source cache object.
-  var localStorage;
-  try { localStorage = window.localStorage; } catch (e) { localStorage = {}; }
+      HTMLImageElement = window.HTMLImageElement,
+      localStorage = window.localStorage;
 
   var isDOMPresent = ("document" in this) && !("fake" in this.document);
 
@@ -9710,7 +9598,9 @@ module.exports = function setupParser(Processing, options) {
     ////////////////////////////////////////////////////////////////////////////
     // JavaScript event binding and releasing
     ////////////////////////////////////////////////////////////////////////////
-	var eventHandlers = [];
+
+    var eventHandlers = [];
+
     function attachEventHandler(elem, type, fn) {
       if (elem.addEventListener) {
         elem.addEventListener(type, fn, false);
@@ -9731,14 +9621,6 @@ module.exports = function setupParser(Processing, options) {
       }
     }
 
-    function detachEventHandlersByType(element, types) {
-      Object.keys(eventHandlers).forEach(function(eventHandler) {
-        if (types.indexOf(eventHandler.type) > -1 && (eventHandler.elem == element)) {
-          detachEventHandler(eventHandler.type);
-        }
-      });
-    }
-
     function removeFirstArgument(args) {
       return Array.prototype.slice.call(args, 1);
     }
@@ -9750,11 +9632,10 @@ module.exports = function setupParser(Processing, options) {
     p.Char = p.Character = Char;
 
     // add in the Processing API functions
-    eventHandlers = [];
     extend.withCommonFunctions(p);
     extend.withMath(p);
     extend.withProxyFunctions(p, removeFirstArgument);
-    extend.withTouch(p, curElement, attachEventHandler, detachEventHandlersByType, document, PConstants);
+    extend.withTouch(p, curElement, attachEventHandler, document, PConstants);
 
     // custom functions and properties are added here
     if(aFunctions) {
@@ -10753,18 +10634,6 @@ module.exports = function setupParser(Processing, options) {
       return new XML(p, uri);
     };
 
-    /**
-     * Processing 2.0 function for creating XML elements from string
-     *
-     * @param {String} xml the XML source code
-     *
-     * @return {XML} An XML object representation of the input XML markup.
-     */
-    p.parseXML = function(xmlstring) {
-      var element = new XML();
-      element.parse(xmlstring);
-      return element;
-    };
 
     ////////////////////////////////////////////////////////////////////////////
     // 2D Matrix
@@ -12613,9 +12482,6 @@ module.exports = function setupParser(Processing, options) {
       s = (s > colorModeY) ? colorModeY : s;
       b = (b > colorModeZ) ? colorModeZ : b;
 
-      // Limit values smaller than range
-      h = (h < 0) ? 0 : h;
-
       h = (h / colorModeX) * 360;
       s = (s / colorModeY) * 100;
       b = (b / colorModeZ) * 100;
@@ -12643,8 +12509,6 @@ module.exports = function setupParser(Processing, options) {
         return [t, p, br];
       case 5:
         return [br, p, q];
-      default:
-        Processing.debug("Unexpectedly hit default case in toRGB function.");
       }
     };
 
@@ -12847,7 +12711,7 @@ module.exports = function setupParser(Processing, options) {
         b = p.lerp(hsb1[2], hsb2[2], amt);
         rgb = p.color.toRGB(h, s, b);
         // ... and for Alpha-range
-        a = (p.lerp(a1, a2, amt) * colorModeA + 0.5) | 0;
+        a = p.lerp(a1, a2, amt) * colorModeA;
 
         return (a << 24) & PConstants.ALPHA_MASK |
                (rgb[0] << 16) & PConstants.RED_MASK |
@@ -12868,10 +12732,10 @@ module.exports = function setupParser(Processing, options) {
       a2 = ((colorBits2 & PConstants.ALPHA_MASK) >>> 24) / colorModeA;
 
       // Return lerp value for each channel, INT for color, Float for Alpha-range
-      r = (p.lerp(r1, r2, amt) + 0.5) | 0;
-      g = (p.lerp(g1, g2, amt) + 0.5) | 0;
-      b = (p.lerp(b1, b2, amt) + 0.5) | 0;
-      a = (p.lerp(a1, a2, amt) * colorModeA + 0.5) | 0;
+      r = p.lerp(r1, r2, amt) | 0;
+      g = p.lerp(g1, g2, amt) | 0;
+      b = p.lerp(b1, b2, amt) | 0;
+      a = p.lerp(a1, a2, amt) * colorModeA;
 
       return (a << 24) & PConstants.ALPHA_MASK |
              (r << 16) & PConstants.RED_MASK |
@@ -14143,8 +14007,8 @@ module.exports = function setupParser(Processing, options) {
      * @see #join
      * @see #print
      */
-    p.println = function() {
-      Processing.logger.println.apply(Processing.logger, arguments);
+    p.println = function(message) {
+      Processing.logger.println(message);
     };
     /**
      * The print() function writes to the console area of the Processing environment.
@@ -14153,8 +14017,8 @@ module.exports = function setupParser(Processing, options) {
      *
      * @see #join
      */
-    p.print = function() {
-      Processing.logger.print.apply(Processing.logger, arguments);
+    p.print = function(message) {
+      Processing.logger.print(message);
     };
 
     // Alphanumeric chars arguments automatically converted to numbers when
@@ -16155,10 +16019,9 @@ module.exports = function setupParser(Processing, options) {
       if (!doStroke) {
         return;
       }
-      if (!renderSmooth) {
-        x = Math.round(x);
-        y = Math.round(y);
-      }
+
+      x = Math.round(x);
+      y = Math.round(y);
       curContext.fillStyle = p.color.toString(currentStrokeColor);
       isFillDirty = true;
       // Draw a circle for any point larger than 1px
@@ -17617,12 +17480,11 @@ module.exports = function setupParser(Processing, options) {
      * @param {float} d       height of the arc's ellipse
      * @param {float} start   angle to start the arc, specified in radians
      * @param {float} stop    angle to stop the arc, specified in radians
-     * @param {enum}  mode    drawing mode (OPEN, CHORD, PIE)
      *
      * @see #ellipseMode()
      * @see #ellipse()
      */
-    p.arc = function(x, y, width, height, start, stop, mode) {
+    p.arc = function(x, y, width, height, start, stop) {
       if (width <= 0 || stop < start) { return; }
 
       if (curEllipseMode === PConstants.CORNERS) {
@@ -17643,53 +17505,40 @@ module.exports = function setupParser(Processing, options) {
         stop += PConstants.TWO_PI;
       }
       if (stop - start > PConstants.TWO_PI) {
-        // don't change start, it is visible in PIE mode
-        stop = start + PConstants.TWO_PI;
+        start = 0;
+        stop = PConstants.TWO_PI;
       }
       var hr = width / 2,
           vr = height / 2,
           centerX = x + hr,
           centerY = y + vr,
-          step = 1/(hr+vr);
-
-      var drawSlice = (function(x, y, start, step, stop) {
-        return function(p, closed, i, a, e) {
-          i = 0;
-          a = start;
-          e = stop + step;
-          p.beginShape();
-          if(closed) { p.vertex(x-0.5, y-0.5); }
-          for (; a < e; i++, a = i*step + start) {
-            p.vertex(
-              (x + Math.cos(a) * hr)|0,
-              (y + Math.sin(a) * vr)|0
-            );
-          }
-
-          if (mode === PConstants.OPEN && doFill) {
-            p.vertex(centerX + Math.cos(start) * hr, centerY + Math.sin(start) * vr);
-          } else if (mode === PConstants.CHORD) {
-            p.vertex(centerX + Math.cos(start) * hr, centerY + Math.sin(start) * vr);
-          } else if (mode === PConstants.PIE) {
-            p.line(centerX + Math.cos(start) * hr, centerY + Math.sin(start) * vr, centerX, centerY);
-            p.line(centerX, centerY, centerX + Math.cos(stop) * hr, centerY + Math.sin(stop) * vr);
-          }
-
-          p.endShape(closed ? PConstants.CLOSE : undefined);
-        };
-      }(centerX+0.5, centerY+0.5, start, step, stop));
-
+          startLUT = 0 | (0.5 + start * p.RAD_TO_DEG * 2),
+          stopLUT  = 0 | (0.5 + stop * p.RAD_TO_DEG * 2),
+          i, j;
       if (doFill) {
+        // shut off stroke for a minute
         var savedStroke = doStroke;
         doStroke = false;
-        drawSlice(p, true);
+        p.beginShape();
+        p.vertex(centerX, centerY);
+        for (i = startLUT; i <= stopLUT; i++) {
+          j = i % PConstants.SINCOS_LENGTH;
+          p.vertex(centerX + cosLUT[j] * hr, centerY + sinLUT[j] * vr);
+        }
+        p.endShape(PConstants.CLOSE);
         doStroke = savedStroke;
       }
 
       if (doStroke) {
+        // and doesn't include the first (center) vertex.
         var savedFill = doFill;
         doFill = false;
-        drawSlice(p);
+        p.beginShape();
+        for (i = startLUT; i <= stopLUT; i++) {
+          j = i % PConstants.SINCOS_LENGTH;
+          p.vertex(centerX + cosLUT[j] * hr, centerY + sinLUT[j] * vr);
+        }
+        p.endShape();
         doFill = savedFill;
       }
     };
@@ -17718,13 +17567,10 @@ module.exports = function setupParser(Processing, options) {
       if (!doStroke) {
         return;
       }
-      if (!renderSmooth) {
-        x1 = Math.round(x1);
-        x2 = Math.round(x2);
-        y1 = Math.round(y1);
-        y2 = Math.round(y2);
-      }
-
+      x1 = Math.round(x1);
+      x2 = Math.round(x2);
+      y1 = Math.round(y1);
+      y2 = Math.round(y2);
       // A line is only defined if it has different start and end coordinates.
       // If they are the same, we call point instead.
       if (x1 === x2 && y1 === y2) {
@@ -18063,8 +17909,7 @@ module.exports = function setupParser(Processing, options) {
     * @see quad
     */
     Drawing2D.prototype.rect = function(x, y, width, height, tl, tr, br, bl) {
-      // width and height need to be defined, numerical values
-      if (width!=''+width && height!=''+height) {
+      if (!width && !height) {
         return;
       }
 
@@ -18081,12 +17926,10 @@ module.exports = function setupParser(Processing, options) {
         y -= height / 2;
       }
 
-      if (!renderSmooth) {
-        x = Math.round(x);
-        y = Math.round(y);
-        width = Math.round(width);
-        height = Math.round(height);
-      }
+      x = Math.round(x);
+      y = Math.round(y);
+      width = Math.round(width);
+      height = Math.round(height);
       if (tl !== undef) {
         roundedRect$2d(x, y, width, height, tl, tr, br, bl);
         return;
@@ -19754,7 +19597,7 @@ module.exports = function setupParser(Processing, options) {
 
     // helper function for filter()
     var buildBlurKernel = function(r) {
-      var radius = p.floor(r * 3.5), i;
+      var radius = p.floor(r * 3.5), i, radiusi;
       radius = (radius < 1) ? 1 : ((radius < 248) ? radius : 248);
       if (p.shared.blurRadius !== radius) {
         p.shared.blurRadius = radius;
@@ -19769,7 +19612,7 @@ module.exports = function setupParser(Processing, options) {
         }
         var radiusiSquared = (radius - 1) * (radius - 1);
         for (i = 1; i < radius; i++) {
-          sharedBlurKernal[radius + i] = sharedBlurKernal[radius-i] = radiusiSquared;
+          sharedBlurKernal[radius + i] = sharedBlurKernal[radiusi] = radiusiSquared;
         }
         sharedBlurKernal[radius] = radius * radius;
       }
@@ -21664,7 +21507,7 @@ module.exports = function setupParser(Processing, options) {
   return Processing;
 };
 
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 // Base source files
 var source = {
   virtEquals: require("./Helpers/virtEquals"),
@@ -21798,4 +21641,5 @@ module.exports = function buildProcessingJS(Browser, testHarness) {
   return Processing;
 };
 
-},{"../package.json":2,"./Helpers/ObjectIterator":3,"./Helpers/PConstants":4,"./Helpers/defaultScope":6,"./Helpers/finalizeProcessing":7,"./Helpers/virtEquals":8,"./Helpers/virtHashCode":9,"./Objects/ArrayList":10,"./Objects/Char":11,"./Objects/HashMap":12,"./Objects/PFont":13,"./Objects/PMatrix2D":14,"./Objects/PMatrix3D":15,"./Objects/PShape":16,"./Objects/PShapeSVG":17,"./Objects/PVector":18,"./Objects/XMLAttribute":19,"./Objects/XMLElement":20,"./Objects/webcolors":21,"./P5Functions/JavaProxyFunctions":22,"./P5Functions/Math.js":23,"./P5Functions/commonFunctions":24,"./P5Functions/touchmouse":25,"./Parser/Parser":26,"./Processing":27}]},{},[1]);
+},{"../package.json":2,"./Helpers/ObjectIterator":3,"./Helpers/PConstants":4,"./Helpers/defaultScope":5,"./Helpers/finalizeProcessing":6,"./Helpers/virtEquals":7,"./Helpers/virtHashCode":8,"./Objects/ArrayList":9,"./Objects/Char":10,"./Objects/HashMap":11,"./Objects/PFont":12,"./Objects/PMatrix2D":13,"./Objects/PMatrix3D":14,"./Objects/PShape":15,"./Objects/PShapeSVG":16,"./Objects/PVector":17,"./Objects/XMLAttribute":18,"./Objects/XMLElement":19,"./Objects/webcolors":20,"./P5Functions/JavaProxyFunctions":21,"./P5Functions/Math.js":22,"./P5Functions/commonFunctions":23,"./P5Functions/touchmouse":24,"./Parser/Parser":25,"./Processing":26}]},{},[1])
+;
