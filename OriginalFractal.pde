@@ -1,7 +1,7 @@
 void setup() {
   size(1100, 700);
   //wood = loadImage("logpile.png");
-  falls  = new ArrayList<snowFrac>();
+  falls  = new ArrayList<SnowFrac>();
   //load image of logs, initialize arraylist of snowFractalFlakes
 }
 //PImage wood; //declare image of wood and snowFractalFlakes
