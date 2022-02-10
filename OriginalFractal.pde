@@ -1,3 +1,4 @@
+ArrayList<SnowFrac>falls;
 void setup() {
   size(1100, 700);
   //wood = loadImage("logpile.png");
@@ -5,7 +6,6 @@ void setup() {
   //load image of logs, initialize arraylist of snowFractalFlakes
 }
 //PImage wood; //declare image of wood and snowFractalFlakes
-ArrayList<SnowFrac>falls;
 void mountain(float x, float y, float size) {
   noStroke();
   if (size>70) {
