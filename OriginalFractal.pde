@@ -1,8 +1,8 @@
+ArrayList<Snow>powder = new ArrayList<Snow>();
 void setup() {
   size(1100, 700);
+  powder=new ArrayList<Snow>();
 }
-ArrayList<Snow>flakes = new ArrayList<Snow>();
-
 //PImage wood; //declare image of wood and snowFractalFlakes
 void mountain(float x, float y, float size) {
   noStroke();
@@ -106,12 +106,11 @@ void draw() {
 
   noFill(); //periodically add new snowflakes to the scene
   if (random(0,1)>0.995) {
-    Snow Larry = new Snow();
-    flakes.add(Larry);
+    powder.add(new Snow());
   }
-  for (int i=0; i<flakes.size(); i++) {
-    if (flakes.get(i).show()==false) { //draw all the snowflakes
-      flakes.remove(i); //if they've faded, remove from memory
+  for (int i=0; i<powder.size(); i++) {
+    if (powder.get(i).show()==false) { //draw all the snowflakes
+      powder.remove(i); //if they've faded, remove from memory
       i--;
     }
   }
