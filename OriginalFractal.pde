@@ -1,8 +1,8 @@
-//ArrayList<SnowFrac>falls;
+ArrayList<SnowFrac>powder;
 void setup() {
   size(1100, 700);
   //wood = loadImage("logpile.png");
- // falls  = new ArrayList<SnowFrac>();
+  powder  = new ArrayList<SnowFrac>();
   //load image of logs, initialize arraylist of snowFractalFlakes
 }
 //PImage wood; //declare image of wood and snowFractalFlakes
@@ -51,7 +51,7 @@ void fractalTree(float x, float y, float xSize, float ySize) { //recursive fract
   }
 }
 
-void FractalFlake(float x, float y, int xLength, int yLength) { //recursive fractal to draw an easy snowFractalFlake
+void FractalFlake(float x, float y, float xLength, float yLength) { //recursive fractal to draw an easy snowFractalFlake
   line(x-(xLength/2), y-(yLength/2), x+(xLength/2), y+(yLength/2)); //draw the given line of the snowFractalFlake
   if (xLength>5 ||yLength>5) {
     FractalFlake(x+(xLength/3), y+(yLength/3), yLength/2, xLength/2); //call the function to make three lines through the middle of this line
@@ -60,20 +60,20 @@ void FractalFlake(float x, float y, int xLength, int yLength) { //recursive frac
   }
 }
 class SnowFrac { //holder class to store the locations and sizes of snowFractalFlake fractals
-  private float x, y, xspeed, howBig, fade;
+  protected float x, y, xSpeed, howBig, fade;
   SnowFrac() {
     x=random(250, 800); //initializes the snowFractalFlake somewhere above the screen, with opaque transparency and a random x velocity
     howBig=random(10, 70);
     y=random(-100, 0);
     fade=255;
-    xspeed=random(-2, 2);
+    xSpeed=random(-2, 2);
   }
   boolean show() {
-    x+=xspeed; //update x position based on speed
+    x+=xSpeed; //update x position based on speed
     y+=1; //make snowFractalFlake fall
     fade-=.6; //make snowFractalFlake fade
-    stroke(255, 255, 255, (int)fade);
-    FractalFlake((int)x, (int)y, (int) howBig, 0); //draw the snowflake using the fractal
+    stroke(255, 255, 255, fade);
+    FractalFlake((int)x, y, (int) howBig, 0); //draw the snowflake using the fractal
     FractalFlake((int)x, (int)y, 0, (int)howBig);
     if (fade<0) {
       return false; //if it's completely faded, return false so that it will be removed from the arraylist
@@ -95,6 +95,10 @@ void draw() {
 
   fill(230, 230, 230);
   rect(0, 650, 1100, 50);
+  fill(100);
+  rect(190,670,320,100);
+  fill(80);
+  ellipse(350,670,320,100);
 
   //tint(150, 100, 100); //draw pile of logs
   //image(wood, 180, 630, 200, 120);
