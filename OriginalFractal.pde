@@ -1,10 +1,10 @@
-ArrayList<SnowFrac>powder;
 void setup() {
   size(1100, 700);
   //wood = loadImage("logpile.png");
-  powder  = new ArrayList<SnowFrac>();
   //load image of logs, initialize arraylist of snowFractalFlakes
 }
+ArrayList<Snow>flakes = new ArrayList<Snow>();
+
 //PImage wood; //declare image of wood and snowFractalFlakes
 void mountain(float x, float y, float size) {
   noStroke();
@@ -59,9 +59,9 @@ void FractalFlake(float x, float y, float xLength, float yLength) { //recursive 
     FractalFlake(x, y, yLength/2, xLength/2);
   }
 }
-class SnowFrac { //holder class to store the locations and sizes of snowFractalFlake fractals
+class Snow { //holder class to store the locations and sizes of snowFractalFlake fractals
   protected float x, y, xSpeed, howBig, fade;
-  SnowFrac() {
+  Snow() {
     x=random(250, 800); //initializes the snowFractalFlake somewhere above the screen, with opaque transparency and a random x velocity
     howBig=random(10, 70);
     y=random(-100, 0);
@@ -96,9 +96,9 @@ void draw() {
   fill(230, 230, 230);
   rect(0, 650, 1100, 50);
   fill(100);
-  rect(190,670,320,100);
+  rect(190, 670, 320, 100);
   fill(80);
-  ellipse(350,670,320,100);
+  ellipse(350, 670, 320, 100);
 
   //tint(150, 100, 100); //draw pile of logs
   //image(wood, 180, 630, 200, 120);
