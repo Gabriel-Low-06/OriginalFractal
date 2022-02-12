@@ -1,7 +1,5 @@
 void setup() {
   size(1100, 700);
-  //wood = loadImage("logpile.png");
-  //load image of logs, initialize arraylist of snowFractalFlakes
 }
 ArrayList<Snow>flakes = new ArrayList<Snow>();
 
@@ -100,12 +98,6 @@ void draw() {
   fill(80);
   ellipse(350, 670, 320, 100);
 
-  //tint(150, 100, 100); //draw pile of logs
-  //image(wood, 180, 630, 200, 120);
-  //image(wood, 360, 630, 200, 120);
-  //image(wood, 250, 630, 200, 120);
-
-
   fractalTree(800, 780, 300*(1-(abs((float)sin(millis()*.00016))*.4)), 225*(1+(abs((float)cos(millis()*.0004))*.03)));
   //draw a fractalTree on the right side, oscilatting back on forth under a sin wave
 
@@ -113,14 +105,14 @@ void draw() {
   fireFractal(300, 700, 200); //draw the fire fractal on top of the logs
 
   noFill(); //periodically add new snowflakes to the scene
-  //if (random(0,1)>0.995) {
-  //  snowFrac Larry = new snowFrac();
-  //  snow.add(Larry);
-  //}
-  //for (int i=0; i<snow.size(); i++) {
-  //  if (snow.get(i).show()==false) { //draw all the snowflakes
-  //    snow.remove(i); //if they've faded, remove from memory
-  //    i--;
-  //  }
-  //}
+  if (random(0,1)>0.995) {
+    Snow Larry = new Snow();
+    flakes.add(Larry);
+  }
+  for (int i=0; i<flakes.size(); i++) {
+    if (flakes.get(i).show()==false) { //draw all the snowflakes
+      flakes.remove(i); //if they've faded, remove from memory
+      i--;
+    }
+  }
 }
