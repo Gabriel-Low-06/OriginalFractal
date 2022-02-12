@@ -49,7 +49,7 @@ void fractalTree(float x, float y, float xSize, float ySize) { //recursive fract
   }
 }
 
-void FractalFlake(float x, float y, float xLength, float yLength) { //recursive fractal to draw an easy snowFractalFlake
+void FractalFlake(int x, int y, int xLength, int yLength) { //recursive fractal to draw an easy snowFractalFlake
   line(x-(xLength/2), y-(yLength/2), x+(xLength/2), y+(yLength/2)); //draw the given line of the snowFractalFlake
   if (xLength>5 ||yLength>5) {
     FractalFlake(x+(xLength/3), y+(yLength/3), yLength/2, xLength/2); //call the function to make three lines through the middle of this line
@@ -61,7 +61,7 @@ class Snow { //holder class to store the locations and sizes of snowFractalFlake
   protected float x, y, xSpeed, howBig, fade;
   Snow() {
     x=random(250, 800); //initializes the snowFractalFlake somewhere above the screen, with opaque transparency and a random x velocity
-    howBig=random(10, 70);
+    howBig=random(10, 80);
     y=random(-100, 0);
     fade=255;
     xSpeed=random(-2, 2);
@@ -71,7 +71,7 @@ class Snow { //holder class to store the locations and sizes of snowFractalFlake
     y+=1; //make snowFractalFlake fall
     fade-=.6; //make snowFractalFlake fade
     stroke(255, 255, 255, fade);
-    FractalFlake((int)x, y, (int) howBig, 0); //draw the snowflake using the fractal
+    FractalFlake((int)x, (int)y, (int) howBig, 0); //draw the snowflake using the fractal
     FractalFlake((int)x, (int)y, 0, (int)howBig);
     if (fade<0) {
       return false; //if it's completely faded, return false so that it will be removed from the arraylist
@@ -105,7 +105,7 @@ void draw() {
   fireFractal(300, 700, 200); //draw the fire fractal on top of the logs
 
   noFill(); //periodically add new snowflakes to the scene
-  if (random(0,1)>0.995) {
+  if (random(0,1)>0.993) {
     powder.add(new Snow());
   }
   for (int i=0; i<powder.size(); i++) {
