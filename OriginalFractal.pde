@@ -80,7 +80,11 @@ class Snow { //holder class to store the locations and sizes of snowFractalFlake
   }
 }
 
+int time_counter = 0;
+
 void draw() {
+if(millis()>time_counter+42){
+  time_counter = millis();
   background(0, 0, 50); //reset frame
 
   fill(255, 255, 255); //draw moon
@@ -117,5 +121,5 @@ void draw() {
       i--;
     }
   }
-  delay(42);
+}
 }
