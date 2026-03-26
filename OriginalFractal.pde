@@ -6,7 +6,7 @@ void setup() {
 //PImage wood; //declare image of wood and snowFractalFlakes
 void mountain(float x, float y, float size) {
   noStroke();
-  if (size>70) {
+  if (size>79) {
     fill(constrain((600-y)*.6, 10, 155), 160, (constrain((300-y)*.5, 10, 135)));
     mountain(x+size*2/3, y, size*.7);
     triangle(x, y, x+size, y, x+size/2, y-size);
@@ -18,9 +18,9 @@ void mountain(float x, float y, float size) {
   }
 }
 void fireFractal(float x, float y, float howBig) { //recursive code to generate fire
-  if (howBig>random(50, 110)) {  //if this flame is bigger than a certain size, add two new, smaller flames to the left and right
-    fireFractal(x+(howBig*random(0, .5)), y-(howBig*(random(.01, .1))), howBig*random(.7, .9));
-    fireFractal(x-(howBig*random(-.1, .3)), y-(howBig*random(.01, .1)), howBig*random(.7, .9));
+  if (howBig>random(80, 100)) {  //if this flame is bigger than a certain size, add two new, smaller flames to the left and right
+    fireFractal(x+(howBig*random(0.2, .3)), y-(howBig*(random(.01, .1))), howBig*random(.7, .8));
+    fireFractal(x-(howBig*random(0.2, 0.3)), y-(howBig*random(.01, .1)), howBig*random(.7, .8));
   }
   fill(255, random(120, 140), random(20, 40), 135); //make the flame  a slightly randomized shade of oragne
   pushMatrix();
@@ -68,8 +68,8 @@ class Snow { //holder class to store the locations and sizes of snowFractalFlake
   }
   boolean show() {
     x+=xSpeed; //update x position based on speed
-    y+=1; //make snowFractalFlake fall
-    fade-=.6; //make snowFractalFlake fade
+    y+=2; //make snowFractalFlake fall
+    fade-=1.1; //make snowFractalFlake fade
     stroke(255, 255, 255, fade);
     FractalFlake((int)x, (int)y, (int) howBig, 0); //draw the snowflake using the fractal
     FractalFlake((int)x, (int)y, 0, (int)howBig);
@@ -88,8 +88,11 @@ void draw() {
   ellipse(100, 100, 100, 100);
   fill(0, 0, 50);
   ellipse(135, 100, 90, 90);
-  mountain(700, 800, 300);
-  mountain(-100, 700, 350);
+  
+  fill(100,200,0);
+  triangle(0,700,800,700,0,350);
+  mountain(600, 750, 300);
+  mountain(-100, 650, 350);
 
   fill(230, 230, 230);
   rect(0, 650, 1100, 50);
@@ -102,7 +105,7 @@ void draw() {
   //draw a fractalTree on the right side, oscilatting back on forth under a sin wave
 
   noStroke();
-  fireFractal(300, 700, 200); //draw the fire fractal on top of the logs
+  fireFractal(320, 700, 200); //draw the fire fractal on top of the logs
 
   noFill(); //periodically add new snowflakes to the scene
   if (random(0,1)>0.993) {
@@ -114,4 +117,5 @@ void draw() {
       i--;
     }
   }
+  delay(42);
 }
